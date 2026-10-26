@@ -106,7 +106,7 @@ export default function Builder() {
     try {
       const { site: saved, link } = await api(`/sites/${id}/publish`, { method: 'POST' });
       setSite((s) => ({ ...s, status: saved.status }));
-      setPub({ open: true, link });
+      setPub({ open: true, link: `${window.location.origin}/for/${saved.slug}` });
     } catch (e) {
       if (e.field) setErrors((er) => ({ ...er, [e.field]: e.message }));
       toast(e.message);
@@ -232,7 +232,7 @@ export default function Builder() {
       {previewing && <Experience site={site} preview onExit={() => setPreviewing(false)} />}
 
       <PublishDialog
-        open={pub.open} link={pub.link} when={site.unlockAt}
+        open={pub.open} link={pub.link} when={site.unlockAt} her={site.herName.trim()}
         onClose={() => setPub((p) => ({ ...p, open: false }))}
         onPreview={() => { setPub((p) => ({ ...p, open: false })); setPreviewing(true); }}
       />

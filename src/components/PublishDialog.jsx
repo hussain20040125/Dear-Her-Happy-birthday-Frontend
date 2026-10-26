@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { formatWhen } from '../lib/format';
 import { useToast } from './Toast';
+import LoveQR from './LoveQR';
 
-export default function PublishDialog({ open, link, when, onClose, onPreview }) {
+export default function PublishDialog({ open, link, when, her, onClose, onPreview }) {
   const ref = useRef();
   const inputRef = useRef();
   const toast = useToast();
@@ -22,7 +23,8 @@ export default function PublishDialog({ open, link, when, onClose, onPreview }) 
   const whatsapp = `https://wa.me/?text=${encodeURIComponent('I made you something. Open it when it’s time 💌 ' + link)}`;
 
   return (
-    <dialog className="dlg" ref={ref} onClose={onClose} aria-labelledby="pubTitle">
+    <dialog className="dlg pub" ref={ref} onClose={onClose} aria-labelledby="pubTitle">
+      <div className="pub-text">
       <h2 id="pubTitle">Your surprise is ready</h2>
       <p>Send her this link. It stays locked until <b>{formatWhen(when)}</b>.</p>
       <div className="copyrow">
@@ -34,6 +36,8 @@ export default function PublishDialog({ open, link, when, onClose, onPreview }) 
         <button className="btn" type="button" onClick={onPreview}>Preview again</button>
         <button className="btn primary" type="button" onClick={onClose}>Done</button>
       </div>
+      </div>
+      {open && link && <LoveQR text={link} name={her} />}
     </dialog>
   );
 }
