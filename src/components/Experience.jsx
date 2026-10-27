@@ -319,7 +319,7 @@ const [scene, setScene] = useState(() => (import.meta.env.DEV && new URLSearchPa
 
         {/* 2. Envelope */}
         <section className={cls('env')}>
-          <p className="x-sub">Tap the seal to open</p>
+          <p className={`x-sub env-hint ${envOpen ? 'gone' : ''}`}>Tap the seal to open</p>
           <button className={`envelope ${envOpen ? 'open' : ''}`} type="button" aria-label="Open the envelope" onClick={openEnvelope}>
             <span className="env-back" />
             <span className="env-letter">{her}</span>

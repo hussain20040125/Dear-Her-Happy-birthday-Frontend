@@ -8,9 +8,11 @@ const TURN_MS = 1100;
 function measure(z = 1) {
   const vv = window.visualViewport;
   const W = Math.min(innerWidth, vv?.width || innerWidth) / z, H = Math.min(innerHeight, vv?.height || innerHeight) / z;
-  const tall = (H - (H < 600 ? 170 : 290)) * .7;
-  const spreadW = Math.min(W >= 1600 ? 520 : 440, (W - 56) / 2, tall);
-  if (W >= 720 && spreadW >= 250) return { spread: true, pw: Math.floor(spreadW) };
+  const tall = (H - (H < 600 ? 170 : W < 600 ? 230 : 290)) * .7;
+  // always an open, two-page spread (phones too), as wide as the screen allows
+  const side = W < 600 ? 16 : 56;
+  const spreadW = Math.min(W >= 1600 ? 520 : 440, (W - side) / 2, tall);
+  if (spreadW >= 110) return { spread: true, pw: Math.floor(spreadW) };
   return { spread: false, pw: Math.floor(Math.max(170, Math.min(420, W - 40, tall))) };
 }
 
@@ -106,6 +108,12 @@ export default function Magazine({ pages, info, active, onDone, zoom = 1 }) {
           ? <button className="x-btn" type="button" onClick={onDone}>One last thing</button>
           : <button className="x-link" type="button" onClick={() => go(1)}>Next page</button>}
       </div>
+      {size.spread && innerHeight > innerWidth && innerWidth < 600 && (
+        <p className="mg-tip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M20 9a8 8 0 01-3 6M17 15h3v-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          Turn your phone sideways for bigger pages
+        </p>
+      )}
     </>
   );
 }

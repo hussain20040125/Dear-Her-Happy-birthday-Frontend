@@ -1115,3 +1115,42 @@ dialog.dlg.pub[open]{display:grid;grid-template-columns:minmax(0,1fr) 250px}
   .lock .unit{padding:8px 6px 6px}
   .lock .unit b{font-size:1.6rem}
 }
+
+/* magazine on phones: the open spread uses the full width */
+.mg-tip{margin:-6px 0 0;display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--x-soft);opacity:.8}
+.mg-tip svg{width:16px;height:16px;flex:none;animation:tilt 2.6s ease-in-out infinite;transform-origin:center}
+@keyframes tilt{0%,40%,100%{rotate:0deg}60%,80%{rotate:-90deg}}
+@media (max-width:599px){
+  .scene.enter:has(.mag-stage){padding-left:8px;padding-right:8px}
+}
+
+/* ===== Nothing gets selected; things are dragged, not highlighted ===== */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+input,textarea,[contenteditable],[contenteditable] *{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+img,svg,canvas,a{-webkit-user-drag:none}
+img{user-drag:none}
+/* phones: tapping a card, candle or button never highlights or selects it */
+*{-webkit-tap-highlight-color:transparent}
+:not(input):not(textarea):not([contenteditable])::selection{background:transparent}
+:focus:not(:focus-visible){outline:none}
+.candle,.candle *,.polaroid,.envelope,.tpl,.pill,.mz-thumb,.mz-chip,.site-row{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.exp img,.mz-page img,.photos img{-webkit-touch-callout:none;pointer-events:none}
+/* envelope: once open, the flap folds behind the letter so the letter slides out in front of it */
+.env-letter{z-index:1}
+.envelope.open .env-flap{z-index:0}
+/* the hint above the envelope steps aside as the letter rises */
+.env-hint{transition:opacity .4s ease,translate .4s ease}
+.env-hint.gone{opacity:0;translate:0 -10px}
+.envelope{margin-top:clamp(56px,16vw,90px)}
+/* envelope: no focus box around it after a tap; keyboard focus shows as a glow on the seal instead */
+.envelope:focus,.envelope:focus-visible{outline:none}
+.envelope:focus-visible .seal{box-shadow:0 0 0 3px var(--x-bg),0 0 0 5px var(--x-gold)}
+/* envelope opening without 3D: the flap folds up (2D) and passes behind the letter at the moment it's flat,
+   so no browser can paint it over the pocket mid-animation */
+.envelope{perspective:none;isolation:isolate}
+.env-flap{transition:transform .7s cubic-bezier(.4,0,.2,1),filter .7s ease,z-index 0s linear .35s;will-change:transform}
+.envelope.open .env-flap{transform:scaleY(-1);filter:brightness(.92)}
+.env-back{z-index:0}
+.env-letter{z-index:1}
+.env-front{z-index:2}
+.envelope.open .env-flap{z-index:0}
