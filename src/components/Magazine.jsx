@@ -6,7 +6,8 @@ const TURN_MS = 1100;
 // Page size from the screen: a two-page spread when there's room, one page on phones
 // z: the stage zoom, so sizes are in the zoomed space the pages render in
 function measure(z = 1) {
-  const W = innerWidth / z, H = innerHeight / z;
+  const vv = window.visualViewport;
+  const W = Math.min(innerWidth, vv?.width || innerWidth) / z, H = Math.min(innerHeight, vv?.height || innerHeight) / z;
   const tall = (H - (H < 600 ? 170 : 290)) * .7;
   const spreadW = Math.min(W >= 1600 ? 520 : 440, (W - 56) / 2, tall);
   if (W >= 720 && spreadW >= 250) return { spread: true, pw: Math.floor(spreadW) };

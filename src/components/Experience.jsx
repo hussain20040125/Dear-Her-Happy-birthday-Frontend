@@ -18,14 +18,15 @@ const wob = (i, k) => (((i + 1) * k) % 13) / 6 - 1;
 
 // Scatter the photos across the screen in loose rows, above the caption and button
 // Big screens scale the whole experience up, as if it were designed for them (phones and laptops stay at 1)
-const stageZoom = () => Math.min(2.4, Math.max(1, Math.min(innerWidth / 1280, innerHeight / 760)));
+const viewW = () => Math.min(innerWidth, window.visualViewport?.width || innerWidth);
+const stageZoom = () => Math.min(2.4, Math.max(1, Math.min(viewW() / 1280, innerHeight / 760)));
 
 // z: the stage zoom; rects come back in screen pixels, positions are set in zoomed pixels
 function scatter(stackEl, belowEl, n, z = 1) {
   if (!stackEl || !belowEl || !n) return [];
   const st = stackEl.getBoundingClientRect();
   const cardW = st.width / z, cardH = st.height / z;
-  const W = innerWidth / z, top = 64, bottom = belowEl.getBoundingClientRect().top / z - 12;
+  const W = viewW() / z, top = 64, bottom = belowEl.getBoundingClientRect().top / z - 12;
   const H = Math.max(160, bottom - top);
   // pick the column count that lets the cards be biggest
   let best = { s: 0, cols: 1 };
@@ -61,7 +62,8 @@ export default function Experience({ site, preview = false, onExit, onUnlock, ce
   const rootRef = useRef(), starsRef = useRef(), confRef = useRef(), letterRef = useRef();
   const musicRef = useRef(null), typeT = useRef(), unlockCalled = useRef(false), timers = useRef([]);
 
-  const [scene, setScene] = useState('lock');
+  // dev only: ?scene=mag (etc.) jumps straight to a scene for layout checks
+const [scene, setScene] = useState(() => (import.meta.env.DEV && new URLSearchParams(location.search).get('scene')) || 'lock');
   const [now, setNow] = useState(Date.now());
   const [envOpen, setEnvOpen] = useState(false);
   const [typed, setTyped] = useState('');

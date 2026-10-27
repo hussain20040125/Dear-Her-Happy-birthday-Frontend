@@ -200,7 +200,7 @@ export default function Builder() {
 
           <section className="block" aria-labelledby="h-look">
             <h2 id="h-look">Look and music</h2>
-            <p className="hint">Music starts when she opens the envelope.</p>
+            <p className="hint">The music starts the moment her surprise opens.</p>
             <div className="tpls" role="radiogroup" aria-label="Template">
               {[['midnight', 'Midnight rose', 'Deep wine and candlelight'], ['blush', 'Blush dawn', 'Soft pink and morning light']].map(([v, name, desc]) => (
                 <label className="tpl" data-tpl={v} key={v}>

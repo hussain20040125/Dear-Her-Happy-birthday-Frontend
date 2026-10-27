@@ -1075,3 +1075,43 @@ dialog.dlg.pub[open]{display:grid;grid-template-columns:minmax(0,1fr) 250px}
   dialog.dlg.pub[open]{grid-template-columns:1fr;gap:20px}
   .lqr-card{max-width:240px}
 }
+
+/* ===== Mobile-first fixes ===== */
+/* columns may shrink below their content's natural width, so nothing pushes the page wider than the phone */
+.layout{grid-template-columns:minmax(0,1fr)}
+.form,.preview-col,.block,.field{min-width:0}
+@media (min-width:901px){ .layout{grid-template-columns:minmax(0,1fr) clamp(280px,22vw,420px)} }
+@media (max-width:560px){ .grid2{grid-template-columns:minmax(0,1fr)} }
+.brand{white-space:nowrap}
+.linkgroup span{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.linkgroup input{min-width:5ch}
+/* phones: the save status shrinks to its colored dot */
+@media (max-width:560px){
+  .save-state{display:inline-flex;font-size:0;gap:0;margin-right:auto}
+  .save-state::before{width:9px;height:9px}
+  .topbar{padding-left:16px;padding-right:16px}
+}
+/* magazine grids never grow past the page */
+.t-bw-grid{min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr))}
+.t-comic-grid{min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}
+/* phones: the two looks sit side by side as compact cards */
+@media (max-width:560px){
+  .tpls{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .swatch{aspect-ratio:4/3}
+  .swatch span{font-size:2rem}
+  .tpl b{font-size:.92rem}
+  .tpl em{font-size:.8rem}
+}
+/* short screens (landscape phones): the birthday screen tightens so everything fits */
+@media (max-height:600px){
+  .lock-text{gap:8px}
+  .lock-open .x-k{font-size:.95rem}
+  .lock-open .x-name{font-size:clamp(2.4rem,15vh,4.2rem)}
+  .lock-open .x-wish{font-size:clamp(.95rem,4.2vh,1.2rem)}
+  .lock-open .x-tease{font-size:.88rem}
+  .lock-open .x-btn{padding:10px 22px;font-size:.92rem}
+  .x-orn{margin:0}
+  .lock .count{margin:4px 0}
+  .lock .unit{padding:8px 6px 6px}
+  .lock .unit b{font-size:1.6rem}
+}
